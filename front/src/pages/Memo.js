@@ -2,44 +2,39 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-export const ToDoList = () => {
-  const [todo, setTodo] = useState();
-  const [todoList, setTodoList] = useState([
-    { id: 1, todo: "Todo 1" },
-    { id: 2, todo: "Todo 2" },
-  ]);
+export const Memo = () => {
+  const [content, setContent] = useState();
+  const [memoList, setMemoList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/memo/${localStorage.getItem("id")}`
+          `http://localhost:8080/memo/${localStorage.getItem("userId")}`
         );
-        setTodoList(response.data);
+        setMemoList(response.data);
       } catch (error) {
         console.error("할 일 불러오기 오류 : ", error);
       }
     };
     fetchData();
-  }, [todoList]);
+  }, []);
 
   const handleAdd = () => {
-    axios.post("http://localhost:8080/memo", {
-      id: localStorage.getItem("id"),
-      content: todo,
-    });
+    const userId = localStorage.getItem("userId");
+    axios
+      .post("http://localhost:8080/memo", {
+        content,
+        user: { userId },
+      })
+      .then(window.location.reload());
   };
 
-  const handleDelete = async (todoId) => {
+  const handleDelete = async (memoNum) => {
     try {
-      await axios.delete(`http://localhost:8080/memo/${todoId}`, {
-        headers: {
-          id: localStorage.getItem("id"),
-        },
-      });
-      setTodoList((prevTodoList) =>
-        prevTodoList.filter((item) => item.id !== todoId)
-      );
+      await axios
+        .delete(`http://localhost:8080/memo/${memoNum}`)
+        .then(window.location.reload());
     } catch (error) {
       console.error("할 일 삭제 오류:", error);
     }
@@ -52,30 +47,31 @@ export const ToDoList = () => {
           <Title>오늘 할일</Title>
           <Logout
             onClick={() => {
-              localStorage.removeItem("id");
+              localStorage.removeItem("userId");
               window.location.href = "/";
             }}
           >
             로그아웃
           </Logout>
         </HeaderBox>
-        <AddTodoBox>
-          <TodoInput
+        <div>안녕하세요 {localStorage.getItem("userId")}님 꼭 지키시기 바랍니다.</div>
+        <AddMemoBox>
+          <MemoInput
             placeholder="할일을 적어주세요"
-            value={todo}
-            onChange={(e) => setTodo(e.target.value)}
-          ></TodoInput>
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          ></MemoInput>
           <AddButton>
             <span onClick={handleAdd}>+</span>
           </AddButton>
-        </AddTodoBox>
-        {todoList.map((item, key) => (
-          <TodoListBox key={key}>
-            <TodoList value={item.todo} disabled></TodoList>
+        </AddMemoBox>
+        {memoList.map((item, key) => (
+          <MemoListBox key={key}>
+            <MemoList value={item.content} disabled></MemoList>
             <MinusButton>
-              <span onClick={() => handleDelete(item.id)}>-</span>
+              <span onClick={() => handleDelete(item.memoNum)}>-</span>
             </MinusButton>
-          </TodoListBox>
+          </MemoListBox>
         ))}
       </Form>
     </Wrap>
@@ -91,6 +87,7 @@ const Wrap = styled.div`
 const HeaderBox = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-bottom: 10px;
 `;
 
 const Title = styled.div`
@@ -110,14 +107,14 @@ const Form = styled.div`
   margin: 0 auto;
 `;
 
-const AddTodoBox = styled.div`
+const AddMemoBox = styled.div`
   margin-top: 10%;
   width: 100%;
   display: flex;
   justify-content: space-between;
 `;
 
-const TodoInput = styled.input`
+const MemoInput = styled.input`
   width: 80%;
   height: 40px;
   display: flex;
@@ -145,7 +142,7 @@ const AddButton = styled.div`
   }
 `;
 
-const TodoListBox = styled.div`
+const MemoListBox = styled.div`
   border: 1px solid grey;
   margin-top: 3%;
   width: 100%;
@@ -154,7 +151,7 @@ const TodoListBox = styled.div`
   border-radius: 10px;
 `;
 
-const TodoList = styled.input`
+const MemoList = styled.input`
   background-color: white;
   color: black;
   width: 80%;

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "user_tbl")
 @NoArgsConstructor
-
 public class User {
     @Id
     @Column(name = "user_id")
