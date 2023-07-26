@@ -20,4 +20,16 @@ public class Memo {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    public Memo() {
+    }
+
+    public Memo(String content, User user) {
+        this.content = content;
+        this.user = user;
+    }
+
+    public static Memo of(String content, User user) {
+        return new Memo(content, user);
+    }
 }
