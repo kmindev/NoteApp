@@ -13,7 +13,7 @@ export const ToDoList = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/todo/${localStorage.getItem("id")}`
+          `http://localhost:8080/memo/${localStorage.getItem("id")}`
         );
         setTodoList(response.data);
       } catch (error) {
@@ -24,7 +24,7 @@ export const ToDoList = () => {
   }, [todoList]);
 
   const handleAdd = () => {
-    axios.post("http://localhost:8080/todo", {
+    axios.post("http://localhost:8080/memo", {
       id: localStorage.getItem("id"),
       content: todo,
     });
@@ -32,7 +32,7 @@ export const ToDoList = () => {
 
   const handleDelete = async (todoId) => {
     try {
-      await axios.delete(`http://localhost:8080/todo/${todoId}`, {
+      await axios.delete(`http://localhost:8080/memo/${todoId}`, {
         headers: {
           id: localStorage.getItem("id"),
         },

@@ -4,18 +4,18 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const Login = () => {
-  const [id, setId] = useState();
-  const [password, setPassword] = useState("");
+  const [userId, setUserId] = useState();
+  const [userPw, setUserPw] = useState("");
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/login", {
-        id,
-        password,
+      const response = await axios.post("http://localhost:8080/user/login", {
+        userId,
+        userPw,
       });
-
-      if (response.data) {
-        localStorage.setItem("id", id);
+      if (response.data === userId) {
+        localStorage.setItem("userId", userId);
+        window.location.href = "/todo";
       } else {
         alert("입력하신 정보가 일치하지 않습니다.");
       }
@@ -30,14 +30,14 @@ export const Login = () => {
         <Title>로그인</Title>
         <Input
           placeholder="아이디"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
         ></Input>
         <Input
           placeholder="비밀번호"
           type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={userPw}
+          onChange={(e) => setUserPw(e.target.value)}
         ></Input>
         <ButtonBox>
           <LoginButton onClick={handleSubmit}>로그인</LoginButton>

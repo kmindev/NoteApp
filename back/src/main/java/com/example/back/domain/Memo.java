@@ -2,11 +2,13 @@ package com.example.back.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
-@Table(name = "memo")
+@Table(name = "memo_tbl")
+@NoArgsConstructor
 public class Memo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +22,6 @@ public class Memo {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    public Memo() {
-    }
 
     public Memo(String content, User user) {
         this.content = content;

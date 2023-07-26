@@ -3,19 +3,21 @@ import axios from "axios";
 import { useState } from "react";
 
 export const SignUp = () => {
-  const [id, setId] = useState();
-  const [password, setPassword] = useState("");
-  const [passwordChk, setPasswordChk] = useState("");
+  const [userId, setUserId] = useState();
+  const [userPw, setUserPw] = useState("");
+  const [userPwChk, setUserPwChk] = useState("");
 
   const handleSubmit = async () => {
-    if (password !== passwordChk) {
+    if (userPw !== userPwChk) {
       alert("패스워드가 일치하지 않습니다.");
       return;
     } else {
-      await axios.post("http://localhost:8080/signup", {
-        id,
-        password,
-      });
+      await axios
+        .post("http://localhost:8080/user/join", {
+          userId,
+          userPw,
+        })
+        .then((window.location.href = "/login"));
     }
   };
 
@@ -25,20 +27,20 @@ export const SignUp = () => {
         <Title>회원가입</Title>
         <Input
           placeholder="아이디"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
+          value={userId}
+          onChange={(e) => setUserId(e.target.value)}
         ></Input>
         <Input
           placeholder="비밀번호"
-          value={password}
+          value={userPw}
           type="password"
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => setUserPw(e.target.value)}
         ></Input>
         <Input
           placeholder="비밀번호 확인"
           type="password"
-          value={passwordChk}
-          onChange={(e) => setPasswordChk(e.target.value)}
+          value={userPwChk}
+          onChange={(e) => setUserPwChk(e.target.value)}
         ></Input>
         <ButtonBox>
           <SignUpButton onClick={handleSubmit}>가입하기</SignUpButton>
