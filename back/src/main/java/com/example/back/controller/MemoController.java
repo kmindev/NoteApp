@@ -17,23 +17,23 @@ public class MemoController {
         this.memoService = memoService;
     }
 
-    @PostMapping("/add_memo")
-    public void addMemo(String content, String userId) {
-        memoService.addMemo(content, userId);
+    @PostMapping
+    public void addMemo(@RequestBody Memo memo) {
+        memoService.addMemo(memo.getContent(), memo.getUser().getUserId());
     }
 
-    @PutMapping("/update_memo")
+    @PutMapping
     public void updateMomo(Long memoId, String content) {
         memoService.updateMemo(memoId, content);
     }
 
-    @DeleteMapping("/delete_memo")
-    public void delMemo(Long memoId) {
+    @DeleteMapping("/{memoId}")
+    public void delMemo(@PathVariable Long memoId) {
         memoService.delMemo(memoId);
     }
 
-    @GetMapping("/get_memo")
-    public List<Memo> findUserMemo(String userId) {
+    @GetMapping("/{userId}")
+    public List<Memo> findUserMemo(@PathVariable String userId) {
         return memoService.findUserMemo(userId);
     }
 }

@@ -15,7 +15,7 @@ export const Login = () => {
       });
       if (response.data === userId) {
         localStorage.setItem("userId", userId);
-        window.location.href = "/todo";
+        window.location.href = "/memo";
       } else {
         alert("입력하신 정보가 일치하지 않습니다.");
       }

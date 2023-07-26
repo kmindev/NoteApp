@@ -8,7 +8,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Table(name = "memo_tbl")
-@NoArgsConstructor
 public class Memo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +25,9 @@ public class Memo {
     public Memo(String content, User user) {
         this.content = content;
         this.user = user;
+    }
+
+    public Memo() {
     }
 
     public static Memo of(String content, User user) {
